@@ -1,0 +1,16 @@
+C:\LongRunningSignalR\SignalRClient\bin\Debug\SignalRClient.exe.config
+C:\LongRunningSignalR\SignalRClient\bin\Debug\SignalRClient.exe
+C:\LongRunningSignalR\SignalRClient\bin\Debug\SignalRClient.pdb
+C:\LongRunningSignalR\SignalRClient\bin\Debug\Common.dll
+C:\LongRunningSignalR\SignalRClient\bin\Debug\Common.pdb
+C:\LongRunningSignalR\SignalRClient\obj\Debug\SignalRClient.csprojResolveAssemblyReference.cache
+C:\LongRunningSignalR\SignalRClient\obj\Debug\SignalRClient.exe
+C:\LongRunningSignalR\SignalRClient\obj\Debug\SignalRClient.pdb
+C:\LongRunningSignalR\SignalRClient\bin\Debug\Telerik.DynamicProxy.dll
+C:\LongRunningSignalR\SignalRClient\bin\Debug\Telerik.DynamicProxy.pdb
+C:\LongRunningSignalR\SignalRClient\bin\Debug\Telerik.DynamicProxy.xml
+C:\LongRunningSignalR\SignalRClient\bin\Debug\Microsoft.AspNet.SignalR.Client.dll
+C:\LongRunningSignalR\SignalRClient\bin\Debug\Newtonsoft.Json.dll
+C:\LongRunningSignalR\SignalRClient\bin\Debug\Microsoft.AspNet.SignalR.Client.pdb
+C:\LongRunningSignalR\SignalRClient\bin\Debug\Microsoft.AspNet.SignalR.Client.xml
+C:\LongRunningSignalR\SignalRClient\bin\Debug\Newtonsoft.Json.xml
