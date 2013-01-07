@@ -16,9 +16,9 @@ namespace LongRunningSignalR.Services
 
 		public async Task<BuildResult> Build(BuildData buildData)
 		{
-			var callbackResult = await this.Callback.GetTermsAgreement();
+			await this.Callback.DoSomething();
 
-			return new BuildResult { Shit = callbackResult };
+			return new BuildResult { Shit = "ASD" };
 		}
 
 		public void Dispose()

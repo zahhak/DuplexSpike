@@ -62,7 +62,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\ProjectsTFIS\Basilisk\DynamicProxy\Core\Telerik.DynamicProxy.csproj">
+    <ProjectReference Include="..\..\..\ProjectsTFIS\Basilisk\DynamicProxy\Core\Telerik.DynamicProxy.csproj">
       <Project>{524690BE-C91C-430C-B560-86B22E8F6B12}</Project>
       <Name>Telerik.DynamicProxy</Name>
     </ProjectReference>

@@ -9,5 +9,7 @@ namespace Common
 	public interface IBuildClientCallback
 	{
 		Task<string> GetTermsAgreement();
+
+		Task DoSomething();
 	}
 }

@@ -14,14 +14,12 @@ namespace LongRunningSignalR
 {
 	public class CallbackMethodInterceptor : OperationDescriptorInterceptor
     {
-		private readonly Func<dynamic, object> sendFunc;
-		private readonly Func<dynamic, Type, object> sendFuncGeneric;
+		private readonly Func<dynamic, Type, object> sendFunc;
         private readonly JsonSerializer serializer;
 
-		public CallbackMethodInterceptor(Func<dynamic, object> sendFunc, Func<dynamic, Type, object> sendFuncGeneric, JsonSerializer serializer)
+		public CallbackMethodInterceptor(Func<dynamic, Type, object> sendFunc, JsonSerializer serializer)
         {
-            this.sendFunc = sendFunc;
-			this.sendFuncGeneric = sendFuncGeneric;
+			this.sendFunc = sendFunc;
             this.serializer = serializer;
         }
 
@@ -34,15 +32,14 @@ namespace LongRunningSignalR
             {
                 return;
             }
-            else if (typeof(Task) == invocation.Method.ReturnType)
-            {
-                invocation.SetReturn(this.sendFunc(this.OperationDescriptor));
-                return;
-            }
             else if (typeof(Task).IsAssignableFrom(invocation.Method.ReturnType))
             {
-                var innerType = invocation.Method.ReturnType.GetGenericArguments().Single();
-				invocation.SetReturn(sendFuncGeneric(this.OperationDescriptor, innerType));
+                var innerType = invocation.Method.ReturnType.GetGenericArguments().SingleOrDefault();
+				if (innerType == null)
+				{
+					innerType = typeof(object);
+				}
+				invocation.SetReturn(sendFunc(this.OperationDescriptor, innerType));
             }
             else
             {
@@ -50,4 +47,4 @@ namespace LongRunningSignalR
             }
         }
     }
-}
+}		

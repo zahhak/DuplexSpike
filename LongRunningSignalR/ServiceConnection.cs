@@ -108,50 +108,43 @@ namespace LongRunningSignalR
 		private TCallback CreateCallback(string connectionId, JsonSerializer serializer)
 		{
 			var factory = new ProxyFactory(typeof(TCallback));
-			factory.Register(new CallbackMethodInterceptor(
-				o => this.SendAsync(connectionId, o),
-				(o, type) =>
-				{
-					var m = this.GetType().GetMethods(BindingFlags.Instance | BindingFlags.NonPublic).Single(method => method.Name == "SendAsync" && method.IsGenericMethod);
-					var generic = m.MakeGenericMethod(type);
-					return	generic.Invoke(this, new object[] { connectionId, o });
-				},
-				serializer));
+			factory.Register(new CallbackMethodInterceptor((o, type) => this.SendAsync(connectionId, o, type), serializer));
 			factory.CallingConstructor = new Ctor();
-			return (TCallback)(object)factory.Create();
+			return (TCallback)factory.Create();
 		}
 
-		internal Task<TResult> SendAsync<TResult>(string connectionId, dynamic payload)
+		internal Task SendAsync(string connectionId, dynamic payload, Type type)
 		{
-			var tcs = new TaskCompletionSource<TResult>();
-			this.connectionContext.PendingRequests.TryAdd(payload.OperationId, tcs);
+			var taskCompletionSourceType = typeof(TaskCompletionSource<>).MakeGenericType(type);
+			dynamic taskCompletionSource = Activator.CreateInstance(taskCompletionSourceType);
+			this.connectionContext.PendingRequests.TryAdd(payload.OperationId, taskCompletionSource);
 			ConnectionExtensions.Send(this.Connection, connectionId, payload);
-			return tcs.Task;
-		}
-
-		internal Task SendAsync(string connectionId, dynamic payload)
-		{
-			var tcs = new TaskCompletionSource<object>();
-			this.connectionContext.PendingRequests.TryAdd(payload.OperationId, tcs);
-			ConnectionExtensions.Send(this.Connection, connectionId, payload);
-			return tcs.Task;
+			return taskCompletionSource.Task;
 		}
 
 		private TSession GetOrCreateSession(string connectionId, dynamic operationDescriptor, JsonSerializer serializer, out bool didCreateSession)
 		{
 			var methodName = operationDescriptor.MethodName.Value;
+
+			var methodInfo = GetServiceMethod(methodName);
+			var parsedParameters = ParseArguments(operationDescriptor.Parameters, serializer, methodInfo);
+
+			var session = this.connectionContext.GetOrCreateSession(connectionId, this.service, methodInfo, parsedParameters, out didCreateSession);
+
+			return session;
+		}
+  
+		private MethodInfo GetServiceMethod(string methodName)
+		{
 			var contractType = this.service.GetType();
-			MethodInfo methodInfo = contractType.GetMethod(methodName);
+			var methodInfo = contractType.GetMethod(methodName);
 
 			if (methodInfo == null)
 			{
 				throw new Exception(string.Format("Missing operation: {0}, {1}", contractType.Name, methodName));
 			}
 
-			var parsedParameters = ParseArguments(operationDescriptor.Parameters, serializer, methodInfo);
-			var session = this.connectionContext.GetOrCreateSession(connectionId, this.service, methodInfo, parsedParameters, out didCreateSession);
-
-			return session;
+			return methodInfo;
 		}
 
 		private static IDictionary<string, object> ParseArguments(JObject arguments, JsonSerializer serializer, MethodInfo targetMethod)

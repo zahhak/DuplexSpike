@@ -30,6 +30,13 @@ namespace SignalRClient
 
 		private class BuildCallback : IBuildClientCallback
 		{
+			public Task DoSomething()
+			{
+				var tcs = new TaskCompletionSource<string>();
+				tcs.SetResult("test");
+				return tcs.Task;
+			}
+
 			public Task<string> GetTermsAgreement()
 			{
 				var tcs = new TaskCompletionSource<string>();
