@@ -1,0 +1,16 @@
+#OS junk files
+[Tt]humbs.db
+*.DS_Store
+
+#Visual Studio files
+[Oo]bj/
+[Bb]in/
+*.user
+*.aps
+*.pch
+*.vspscc
+*.vssscc
+*.suo
+*.[Cc]ache
+.[Jj]ust[Cc]ode/
+/packages/
