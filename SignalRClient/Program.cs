@@ -16,15 +16,17 @@ namespace SignalRClient
 		private static async void Duplex()
 		{
 			var context = new HttpOperationContext();
-			var executor = await context.GetDuplexExecutor<IBuildContract, IBuildClientCallback>(new BuildCallback());
-			var session = await executor.Enqueue(o => o.Build());
-			try
+			var executor = context.GetDuplexExecutor<IBuildContract>();
+			using (var session = await executor.Execute(o => o.Build(), (IBuildClientCallback)new BuildCallback()))
 			{
-				var result = await session.Build(new BuildData());
-			}
-			catch (Exception e)
-			{
-				Console.WriteLine(e.Message);
+				try
+				{
+					var result = await session.Build(new BuildData());
+				}
+				catch (Exception e)
+				{
+					Console.WriteLine(e.Message);
+				}
 			}
 		}
 
@@ -40,7 +42,7 @@ namespace SignalRClient
 			public Task<string> GetTermsAgreement()
 			{
 				var tcs = new TaskCompletionSource<string>();
-				tcs.SetResult("test");
+				tcs.SetResult("TermsAgreement");
 				return tcs.Task;
 			}
 		}

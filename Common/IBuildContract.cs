@@ -8,6 +8,6 @@ namespace Common
 {
 	public interface IBuildContract
 	{
-		IBuildSession Build();
+		Task<IBuildSession> Build();
 	}
 }

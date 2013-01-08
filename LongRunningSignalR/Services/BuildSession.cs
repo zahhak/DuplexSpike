@@ -16,22 +16,14 @@ namespace LongRunningSignalR.Services
 
 		public async Task<BuildResult> Build(BuildData buildData)
 		{
-			await this.Callback.DoSomething();
+			var agreement = await this.Callback.GetTermsAgreement();
 
-			return new BuildResult { Shit = "ASD" };
+			return new BuildResult { Shit = agreement };
 		}
 
 		public void Dispose()
 		{
 
-		}
-
-		public Task Future
-		{
-			get
-			{
-				throw new NotImplementedException();
-			}
 		}
 
 		public void Initialize(IBuildClientCallback callback)

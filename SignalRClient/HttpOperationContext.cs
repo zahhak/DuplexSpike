@@ -4,13 +4,11 @@ using System.Threading.Tasks;
 
 namespace SignalRClient
 {
-	public class HttpOperationContext : IHttpOperationContext
+	public class HttpOperationContext
 	{
-		public async Task<IOperationExecutor<TOperation>> GetDuplexExecutor<TOperation, TCallback>(TCallback callback)
+		public DuplexOperationExecutor<TServiceContract> GetDuplexExecutor<TServiceContract>()
 		{
-			var duplexExecutor = new DuplexOperationExecutor<TOperation, TCallback>(this, callback);
-			await duplexExecutor.Initialize();
-			return duplexExecutor;
+			return new DuplexOperationExecutor<TServiceContract>();
 		}
 	}
 }

@@ -13,10 +13,16 @@ namespace LongRunningSignalR
 		//Import ServiceRegistry maybe?
 		private Lazy<ConnectionContext<TService, TSession, TCallback>> connectionContext =
 			new Lazy<ConnectionContext<TService, TSession, TCallback>>(() => new ConnectionContext<TService, TSession, TCallback>());
+		private IDependencyResolver innerResolver;
+
+		public DependencyResolver(IDependencyResolver innerResolver)
+		{
+			this.innerResolver = innerResolver;
+		}
 		
 		public override object GetService(Type serviceType)
 		{
-			if (serviceType == typeof(IConnectionContext<TService, TSession, TCallback>))
+			if (serviceType == typeof(ConnectionContext<TService, TSession, TCallback>))
 			{
 				return connectionContext.Value;
 			}
@@ -26,7 +32,7 @@ namespace LongRunningSignalR
 				return new BuildService();
 			}
 
-			return base.GetService(serviceType);
+			return innerResolver.GetService(serviceType);
 		}
 
 

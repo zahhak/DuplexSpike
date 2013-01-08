@@ -30,8 +30,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Reactive.Interfaces">
+      <HintPath>..\packages\Rx-Interfaces.2.0.21114\lib\Net45\System.Reactive.Interfaces.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -42,16 +48,19 @@
     <Compile Include="ActionExecutor.cs" />
     <Compile Include="BuildData.cs" />
     <Compile Include="BuildResult.cs" />
+    <Compile Include="DynamicProxyFactory.cs" />
     <Compile Include="IBuildClientCallback.cs" />
     <Compile Include="IBuildContract.cs" />
     <Compile Include="IBuildSession.cs" />
+    <Compile Include="InvocationExtensions.cs" />
     <Compile Include="IOperationDescriptor.cs" />
     <Compile Include="IOperationSession.cs" />
-    <Compile Include="IWhateverOperation.cs" />
+    <Compile Include="JsonSerializerExtensions.cs" />
+    <Compile Include="MethodInfoExtensions.cs" />
     <Compile Include="OperationDescriptor.cs" />
-    <Compile Include="OperationDescriptorHelper.cs" />
     <Compile Include="OperationDescriptorInterceptor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProxyBase.cs" />
     <Compile Include="TaskHelpers.cs" />
     <Compile Include="TaskHelpersExtensions.cs" />
   </ItemGroup>

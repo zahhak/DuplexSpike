@@ -2,143 +2,77 @@
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Subjects;
+using System.Reactive.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Common;
 using Microsoft.AspNet.SignalR.Client;
+using Microsoft.AspNet.SignalR.Client.Transports;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Telerik.DynamicProxy;
-using Telerik.DynamicProxy.Abstraction;
 
 namespace SignalRClient
 {
-	partial class DuplexOperationExecutor<TOperation, TCallback> : HttpOperationExecutor<TOperation>
+	public class DuplexOperationExecutor<TServiceContract>
 	{
-		private const string CreateSessionOperationId = "CreateSessionOperationId";
-		private static readonly ConcurrentDictionary<string, ActionExecutor> executors;
-		private readonly ConcurrentDictionary<string, object> operations;
-		private static Lazy<JsonSerializer> iceniumJsonSerializer;
-		private Connection connection;
-		private TCallback Callback;
-
-		static DuplexOperationExecutor()
+		public async Task<TSession> Execute<TSession, TCallback>(Func<TServiceContract, Task<TSession>> setup, TCallback callback)
+			where TSession : IOperationSession<TCallback>
 		{
-			executors = new ConcurrentDictionary<string, ActionExecutor>();
-			iceniumJsonSerializer = new Lazy<JsonSerializer>(() => new JsonSerializer { TypeNameHandling = TypeNameHandling.All });
-		}
-
-		public DuplexOperationExecutor(HttpOperationContext context, TCallback callback) : base(context)
-		{
-			this.Callback = callback;
-			this.operations = new ConcurrentDictionary<string, object>();
-		}
-
-		public async Task Initialize()
-		{
-			this.connection = new Connection("http://iiliev:81/duplex/build");
+			//Build Url
+			var connection = new Connection("http://iiliev:81/duplex/build");
 			
-			this.connection.Received += this.OnServerConnectionReceived;
-
-			this.connection.Error += data => Console.WriteLine(data);
-
 			await connection.Start();
+
+			await this.NegotiateSession(setup, connection);
+
+			Func<object, Task> sendFunc = connection.Send;
+
+			Action disconnectAction = () =>
+				{
+					connection.Stop();
+					connection.Disconnect();
+				};
+			var proxy =  DynamicProxyFactory.CreateProxy<TSession, TCallback>(sendFunc, callback, disconnectAction);
+			connection.Received += data => ((dynamic)proxy).OnReceivedAsync(JsonConvert.DeserializeObject<dynamic>(data));
+			return proxy;
+		}
+  
+		private async Task NegotiateSession<TSession>(Func<TServiceContract, Task<TSession>> setup, Connection connection)
+		{
+			var interceptor = new SessionCreationInterceptor();
+			dynamic factory = new ProxyFactory<TServiceContract>();
+			factory.Register(interceptor);
+			factory.CallingConstructor = new Ctor();
+			var proxy = factory.Create();
+			setup(proxy);
+
+			var receiveTask = ReceiveAsync(connection);
+			await connection.Send(interceptor.OperationDescriptor);
+			await receiveTask;
 		}
 
-		private async void OnServerConnectionReceived(string data)
+		private static Task<string> ReceiveAsync(Connection connection)
 		{
-			dynamic incomingData = JsonConvert.DeserializeObject<dynamic>(data);
-			var incomingDataDictionary = (IDictionary<string, JToken>)incomingData;
-			if (incomingDataDictionary.ContainsKey("MethodName"))
-			{
-				//DUPLICATE CODE
-				var methodName = incomingData.MethodName.Value;
-				var contractType = this.Callback.GetType();
-				MethodInfo methodInfo = contractType.GetMethod(methodName);
-
-				if (methodInfo == null)
+			var tcs = new TaskCompletionSource<string>();
+			Action<string> receiveHandler = null;
+			receiveHandler = message =>
 				{
-					throw new Exception(string.Format("Missing operation: {0}, {1}", contractType.Name, methodName));
-				}
+					tcs.TrySetResult(message);
+					connection.Received -= receiveHandler;
+				};
 
-				var executor = executors.GetOrAdd(methodName, new ActionExecutor(methodInfo));
-				var arguments = ParseArguments(incomingData.Parameters, iceniumJsonSerializer.Value, methodInfo);
-
-				try
+			Action<Exception> errorHandler = null;
+			errorHandler = error =>
 				{
-					var result = await executor.Execute(this.Callback, arguments);
-					this.connection.Send(new { OperationId = incomingData.OperationId, Result = result });
-				}
-				catch (Exception ex)
-				{
-					this.connection.Send(new { OperationId = incomingData.OperationId, Exception = ex });
-				}
-			}
-			else if (incomingDataDictionary.ContainsKey("OperationId"))
-			{
-				object taskCompletionSource;
-				if (operations.TryGetValue(incomingData.OperationId.Value, out taskCompletionSource) & taskCompletionSource.GetType().IsGenericType)
-				{
-					var taskCompletionSourceGenericType = taskCompletionSource.GetType().GetGenericArguments()[0];
-					var isSession = typeof(IOperationSession).IsAssignableFrom(taskCompletionSourceGenericType);
-					if (isSession)
-					{
-						var factory = new ProxyFactory(taskCompletionSourceGenericType);
-						factory.Register(new SessionProxyMethodInterceptor<TOperation, TCallback>(this));
-						factory.CallingConstructor = new Ctor();
-						dynamic proxy = factory.Create();
-						((dynamic)taskCompletionSource).SetResult(proxy);
-					}
-					else
-					{
-						if (incomingDataDictionary.ContainsKey("Result"))
-						{
-							dynamic result = incomingDataDictionary["Result"].ToObject(taskCompletionSourceGenericType, iceniumJsonSerializer.Value);
-							((dynamic)taskCompletionSource).SetResult(result);
-						}
-						else if (incomingDataDictionary.ContainsKey("Exception"))
-						{
-							var exceptionType = Type.GetType(incomingData.Exception.ClassName.Value);
-							dynamic exception = incomingDataDictionary["Exception"].ToObject(exceptionType, iceniumJsonSerializer.Value);
-							((dynamic)taskCompletionSource).SetException(exception);
+					tcs.TrySetException(error);
+					connection.Error -= errorHandler;
+				};
 
-						}
-					}
-				}
-			}
-		}
-
-		//DUPLICATE CODE
-		private static IDictionary<string, object> ParseArguments(JObject arguments, JsonSerializer serializer, MethodInfo targetMethod)
-		{
-			var parameters = (IDictionary<string, JToken>)arguments;
-			return targetMethod.GetParameters().Select(param =>
-			{
-				return new { ParameterName = param.Name, Value = parameters[param.Name].ToObject(param.ParameterType, serializer) };
-			}).ToDictionary(kvp => kvp.ParameterName, kvp => kvp.Value);
-		}
-
-		protected internal override Task Enqueue(OperationDescriptor descriptor)
-		{
-			var json = SerializeDescriptor(descriptor);
-			var tcs = new TaskCompletionSource<object>();
-			this.connection.Send(json);
-			this.operations.AddOrUpdate(descriptor.OperationId, tcs, (oldTcs, newTcs) => tcs);
+			connection.Received += receiveHandler;
+			connection.Error += errorHandler;
 			return tcs.Task;
-		}
-
-		protected internal override Task<TResult> Enqueue<TResult>(OperationDescriptor descriptor)
-		{
-			var json = SerializeDescriptor(descriptor);
-			var tcs = new TaskCompletionSource<TResult>();
-			this.connection.Send(json);
-			this.operations.AddOrUpdate(descriptor.OperationId, tcs, (oldTcs, newTcs) => tcs);
-			return tcs.Task;
-		}
-
-		private string SerializeDescriptor(OperationDescriptor descriptor)
-		{
-			return JValue.FromObject(descriptor, iceniumJsonSerializer.Value).ToString();
 		}
 	}
 }

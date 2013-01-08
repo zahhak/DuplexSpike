@@ -7,7 +7,7 @@ namespace LongRunningSignalR.Services
 {
 	public class BuildService : IBuildContract
 	{
-		public IBuildSession Build()
+		public async Task<IBuildSession> Build()
 		{
 			return new BuildSession();
 		}

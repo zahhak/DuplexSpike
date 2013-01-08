@@ -7,7 +7,7 @@ namespace Common
 {
 	public interface IOperationDescriptor
 	{
-		string OperationId { get; }
+		long OperationId { get; set; }
 
 		string MethodName { get; set; }
 

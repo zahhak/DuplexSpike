@@ -7,7 +7,7 @@ using System.Reflection;
 
 namespace System.Threading.Tasks
 {
-    internal static class TaskHelpersExtensions
+    public static class TaskHelpersExtensions
     {
         private static Task<AsyncVoid> _defaultCompleted = TaskHelpers.FromResult<AsyncVoid>(default(AsyncVoid));
         private static readonly Action<Task> _rethrowWithNoStackLossDelegate = GetRethrowWithNoStackLossDelegate();
@@ -315,7 +315,7 @@ namespace System.Threading.Tasks
         /// </summary>
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "The caught exception type is reflected into a faulted task.")]
         [SuppressMessage("Microsoft.WebAPI", "CR4001:DoNotCallProblematicMethodsOnTask", Justification = "The usages here are deemed safe, and provide the implementations that this rule relies upon.")]
-        internal static Task<TOuterResult> CastFromObject<TOuterResult>(this Task<object> task)
+        public static Task<TOuterResult> CastFromObject<TOuterResult>(this Task<object> task)
         {
             // Stay on the same thread if we can
             if (task.IsCompleted)

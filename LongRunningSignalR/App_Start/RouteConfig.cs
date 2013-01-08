@@ -9,13 +9,13 @@ namespace LongRunningSignalR
 {
 	public class RouteConfig
 	{
-        public static void RegisterRoutes(RouteCollection routes)
-        {
+		public static void RegisterRoutes(RouteCollection routes)
+		{
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
 			routes.MapConnection("myConnection", "duplex/build/{*operation}",
-				typeof(ServiceConnection<IBuildContract, IBuildSession, IBuildClientCallback>), 
-				new DependencyResolver<IBuildContract, IBuildSession, IBuildClientCallback>());
-        }
+				typeof(ServiceConnection<IBuildContract, IBuildSession, IBuildClientCallback>),
+				new DependencyResolver<IBuildContract, IBuildSession, IBuildClientCallback>(GlobalHost.DependencyResolver));
+		}
 	}
 }
