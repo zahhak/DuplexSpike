@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Reactive.Subjects;
 using Telerik.DynamicProxy;
 
 namespace Common

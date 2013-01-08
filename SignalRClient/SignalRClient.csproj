@@ -71,13 +71,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\ProjectsTFIS\Basilisk\DynamicProxy\Core\Telerik.DynamicProxy.csproj">
-      <Project>{524690BE-C91C-430C-B560-86B22E8F6B12}</Project>
-      <Name>Telerik.DynamicProxy</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{3E522DBB-A505-407D-93E2-BBDC6AAC88DF}</Project>
       <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DynamicProxy\Core\Telerik.DynamicProxy.csproj">
+      <Project>{524690BE-C91C-430C-B560-86B22E8F6B12}</Project>
+      <Name>Telerik.DynamicProxy</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

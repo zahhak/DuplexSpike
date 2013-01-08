@@ -1,0 +1,92 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Silverlight", "Silverlight", "{8A611568-819D-45CF-8031-D32EC4CE71E1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Telerik.DynamicProxy.Silverlight", "Silverlight\Core.Silverlight\Telerik.DynamicProxy.Silverlight.csproj", "{E412301F-F653-4663-9C23-B39F70C3A99B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Telerik.DynamicProxy", "Core\Telerik.DynamicProxy.csproj", "{524690BE-C91C-430C-B560-86B22E8F6B12}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Telerik.DynamicProxy.Tests", "DynamicProxy.Tests\Telerik.DynamicProxy.Tests.csproj", "{4742A67C-7382-4FFB-A041-5CEA8178EB6F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Telerik.DynamicProxy.Silverlight.Tests", "Silverlight\DynamicProxy.Silverlight.Tests\Telerik.DynamicProxy.Silverlight.Tests.csproj", "{C95E0A37-7F13-4717-A0DB-E26934F7476F}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 5
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://192.168.0.23:8082/
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Silverlight\\Core.Silverlight\\Telerik.DynamicProxy.Silverlight.csproj
+		SccProjectTopLevelParentUniqueName1 = Druid.sln
+		SccProjectName1 = Silverlight/Core.Silverlight
+		SccLocalPath1 = Silverlight\\Core.Silverlight
+		SccProjectUniqueName2 = Core\\Telerik.DynamicProxy.csproj
+		SccProjectName2 = Core
+		SccLocalPath2 = Core
+		SccProjectUniqueName3 = DynamicProxy.Tests\\Telerik.DynamicProxy.Tests.csproj
+		SccProjectName3 = DynamicProxy.Tests
+		SccLocalPath3 = DynamicProxy.Tests
+		SccProjectUniqueName4 = Silverlight\\DynamicProxy.Silverlight.Tests\\Telerik.DynamicProxy.Silverlight.Tests.csproj
+		SccProjectTopLevelParentUniqueName4 = Druid.sln
+		SccProjectName4 = Silverlight/DynamicProxy.Silverlight.Tests
+		SccLocalPath4 = Silverlight\\DynamicProxy.Silverlight.Tests
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|Mixed Platforms = Debug|Mixed Platforms
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|Mixed Platforms = Release|Mixed Platforms
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E412301F-F653-4663-9C23-B39F70C3A99B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E412301F-F653-4663-9C23-B39F70C3A99B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E412301F-F653-4663-9C23-B39F70C3A99B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{E412301F-F653-4663-9C23-B39F70C3A99B}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{E412301F-F653-4663-9C23-B39F70C3A99B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E412301F-F653-4663-9C23-B39F70C3A99B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E412301F-F653-4663-9C23-B39F70C3A99B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E412301F-F653-4663-9C23-B39F70C3A99B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{E412301F-F653-4663-9C23-B39F70C3A99B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{E412301F-F653-4663-9C23-B39F70C3A99B}.Release|x86.ActiveCfg = Release|Any CPU
+		{524690BE-C91C-430C-B560-86B22E8F6B12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{524690BE-C91C-430C-B560-86B22E8F6B12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{524690BE-C91C-430C-B560-86B22E8F6B12}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{524690BE-C91C-430C-B560-86B22E8F6B12}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{524690BE-C91C-430C-B560-86B22E8F6B12}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{524690BE-C91C-430C-B560-86B22E8F6B12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{524690BE-C91C-430C-B560-86B22E8F6B12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{524690BE-C91C-430C-B560-86B22E8F6B12}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{524690BE-C91C-430C-B560-86B22E8F6B12}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{524690BE-C91C-430C-B560-86B22E8F6B12}.Release|x86.ActiveCfg = Release|Any CPU
+		{4742A67C-7382-4FFB-A041-5CEA8178EB6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4742A67C-7382-4FFB-A041-5CEA8178EB6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4742A67C-7382-4FFB-A041-5CEA8178EB6F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{4742A67C-7382-4FFB-A041-5CEA8178EB6F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{4742A67C-7382-4FFB-A041-5CEA8178EB6F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4742A67C-7382-4FFB-A041-5CEA8178EB6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4742A67C-7382-4FFB-A041-5CEA8178EB6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4742A67C-7382-4FFB-A041-5CEA8178EB6F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{4742A67C-7382-4FFB-A041-5CEA8178EB6F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{4742A67C-7382-4FFB-A041-5CEA8178EB6F}.Release|x86.ActiveCfg = Release|Any CPU
+		{C95E0A37-7F13-4717-A0DB-E26934F7476F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C95E0A37-7F13-4717-A0DB-E26934F7476F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C95E0A37-7F13-4717-A0DB-E26934F7476F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{C95E0A37-7F13-4717-A0DB-E26934F7476F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{C95E0A37-7F13-4717-A0DB-E26934F7476F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{C95E0A37-7F13-4717-A0DB-E26934F7476F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C95E0A37-7F13-4717-A0DB-E26934F7476F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C95E0A37-7F13-4717-A0DB-E26934F7476F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{C95E0A37-7F13-4717-A0DB-E26934F7476F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{C95E0A37-7F13-4717-A0DB-E26934F7476F}.Release|x86.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E412301F-F653-4663-9C23-B39F70C3A99B} = {8A611568-819D-45CF-8031-D32EC4CE71E1}
+		{C95E0A37-7F13-4717-A0DB-E26934F7476F} = {8A611568-819D-45CF-8031-D32EC4CE71E1}
+	EndGlobalSection
+EndGlobal

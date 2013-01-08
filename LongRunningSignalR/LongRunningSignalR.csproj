@@ -272,10 +272,6 @@
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\ProjectsTFIS\Basilisk\DynamicProxy\Core\Telerik.DynamicProxy.csproj">
-      <Project>{524690be-c91c-430c-b560-86b22e8f6b12}</Project>
-      <Name>Telerik.DynamicProxy</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{3e522dbb-a505-407d-93e2-bbdc6aac88df}</Project>
       <Name>Common</Name>

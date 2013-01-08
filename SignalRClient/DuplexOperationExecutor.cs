@@ -1,16 +1,9 @@
 ﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Linq;
-using System.Reactive.Subjects;
-using System.Reactive.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using Common;
 using Microsoft.AspNet.SignalR.Client;
-using Microsoft.AspNet.SignalR.Client.Transports;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Telerik.DynamicProxy;
 
 namespace SignalRClient
